@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "../../custrom_components/Header";
-import { Toaster } from "sonner";
-import Providers from "./Providers";
+import Header from "@/components/Header";
+import { Inter as FontSans } from "next/font/google"
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,13 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>
-          <Header />
-          {children}
-          <Toaster richColors />
+      <body  className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable
+        )}>
+        <Header/>
+        {children}
         </body>
-      </Providers>
     </html>
   );
 }

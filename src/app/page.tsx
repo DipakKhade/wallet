@@ -1,28 +1,9 @@
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import Hero from "../../custrom_components/Hero";
-import { getServerSession } from 'next-auth';
-import Dashboard from "../../custrom_components/Dashboard";
+import Image from "next/image";
 
-const getUserDetails = async () => {
-  const session = await getServerSession(authOptions);
-  return session;
-};
-
-
-export default async function Home() {
-  const session = await getUserDetails();
-  console.log('asd',session)
-  if(session){
-    return<>
-    asd
-    </>
-  }
-
+export default function Home() {
   return (
-    <>
-      <main>
-        <Dashboard />
-      </main>
-    </>
+ <main>
+  asd
+ </main>
   );
 }
