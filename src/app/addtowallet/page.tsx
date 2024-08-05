@@ -2,7 +2,6 @@
 import { DashboardComponent } from "@/components/Dashboard";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -57,19 +56,21 @@ export default function Page() {
         profileImage={(session.data?.user?.image as string) || ""}
         userName={(session.data?.user?.name as string) || ""}
       >
-        <div>
+        <div className="md:pl-60">
+        <p className="text-xl font-medium">Add Amount to wallet</p>
           <div className="flex">
             <div className="justify-center p-4">
               <Card className="w-96 h-[300px] space-y-3 p-3">
-                <p>Add to Wallet</p>
-                <form onSubmit={handleSubmit(onramp)}>
+                  <form onSubmit={handleSubmit(onramp)}>
                   <div className="space-y-2">
+                    <label htmlFor="amount">Amount</label>
                     <Input
                       {...register("amount")}
                       type="number"
                       placeholder="amount"
                     />
 
+                    <label htmlFor="bank">Select Provider</label>
                     <Select onValueChange={(value) => SetBank(value)}>
                       <SelectTrigger className="w-80">
                         <SelectValue placeholder="Select a bank" />
@@ -84,9 +85,10 @@ export default function Page() {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <Button className="m-auto justify-center align-middle">
+                    <div className="w-full flex align-middle justify-center">
+                    <Button>
                       {loading ? (
-                        <div role="status">
+                        <div role="status" className="p-1 space-x-3">
                           <svg
                             aria-hidden="true"
                             className="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-green-500"
@@ -109,11 +111,12 @@ export default function Page() {
                         "Add money"
                       )}
                     </Button>
+                    </div>
                   </div>
                 </form>
               </Card>
-            </div>
             <PreviousOnramps />
+            </div>
           </div>
         </div>
       </DashboardComponent>
@@ -123,22 +126,25 @@ export default function Page() {
 
 export function PreviousOnramps() {
   const [PreviousOnramps, SetPreviousOnramps] = useState();
-
+  const [loading , SetLoading] = useState<boolean>(false)
   useEffect(() => {
     (async () => {
+      SetLoading(true)
       const r = await fetch("/api/v1/onramp", {
         method: "GET",
       });
 
       const response = await r.json();
       SetPreviousOnramps(response);
+      SetLoading(false)
     })();
   }, []);
 
   return (
     <>
-      <main className="pt-5">
-        <Card className="w-[700px] h-[300px]">
+      <main className="">
+        <p className="text-xl font-medium">Previous Transactios</p>
+        <Card className="w-[560px] h-auto p-4">
           <div className="flex">
             <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -159,27 +165,25 @@ export function PreviousOnramps() {
                   </tr>
                 </thead>
                 <tbody>
-                  {PreviousOnramps &&
+                  { loading ? <span> loading... </span> :PreviousOnramps &&
+                    //@ts-ignore
                     PreviousOnramps["Onramps"]["onramps"].map(
                       (r: any, index: number) => (
-                        // <span key={index}>{JSON.stringify(r)}</span>
                         <React.Fragment key={index}>
-                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {index}
-                    </th>
-                    <td className="px-6 py-4">{r.timestamp}</td>
-                    <td className="px-6 py-4">{r.banckName}</td>
-                    <td className="px-6 py-4">INR {r.onrampAmount}</td>
-                  </tr>
+                          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {index}
+                            </th>
+                            <td className="px-6 py-4">{r.timestamp}</td>
+                            <td className="px-6 py-4">{r.banckName}</td>
+                            <td className="px-6 py-4">INR {r.onrampAmount}</td>
+                          </tr>
                         </React.Fragment>
                       )
                     )}
-
-                 
                 </tbody>
               </table>
             </div>

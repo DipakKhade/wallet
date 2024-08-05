@@ -66,7 +66,12 @@ export async function GET(req:NextRequest){
             },
 
             select:{
-                onramps:true
+                onramps:{
+                    orderBy:{
+                        timestamp:'desc'
+                    },
+                    take :5
+                }
             }
         })
 
