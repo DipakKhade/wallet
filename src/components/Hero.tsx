@@ -8,10 +8,9 @@ export default function Hero(){
             <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white"> <span className='text-blue-500'>Payments</span> tool for software companies</h1>
             <p className="max-w-2xl mb-6 text-gray-600 font-semibold lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">sign up to create a free Wallet</p>
            
-            {/* <googleSigInButton onClick={signIn("google")}>sign in</googleSigInButton> */}
             <button
         onClick={()=>signIn("google")}
-        className="px-4 py-2 border flex gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150"
+        className="px-4 py-2 border flex gap-2 border-blue-500 dark:border-blue-700 text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150 rounded-md"
       >
         <img
           className="w-6 h-6"
@@ -19,7 +18,7 @@ export default function Hero(){
           loading="lazy"
           alt="google logo"
         />
-        <span>Sign in with Google</span>
+        <span className='text-blue-500'>Sign in with Google</span>
       </button>
 
         </div>

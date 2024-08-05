@@ -21,7 +21,17 @@ model UserAccount {
   locked  Int    @default(0)
   user  User   @relation(fields: [userid], references: [id])
   userid  String @unique
+  onramps OnRamps[]
 }
+model OnRamps {
+  id String @id @default(cuid())
+  onrampAmount Int
+  banckName String
+  timestamp DateTime @default(now())
+  account UserAccount @relation(fields: [accountid],references: [id])
+  accountid String 
+}
+
 
 model Merchant {
   id              String           @id @default(uuid())

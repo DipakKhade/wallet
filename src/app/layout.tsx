@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils";
 import Providers from "./providers";
+import { Toaster } from 'sonner'
+
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -29,6 +31,7 @@ export default function RootLayout({
         )}>
       <Providers>
         <Header/>
+        <Toaster richColors/>
         {children}
       </Providers>
         </body>
