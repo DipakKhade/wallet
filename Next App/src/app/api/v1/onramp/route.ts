@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import db from "@/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import randomstring from 'randomstring'
 
 export async function POST(req:NextRequest){
     let {amount , bankname}=await  req.json()
     const session =await getServerSession(authOptions);
-    
+    const webhook_token = randomstring.generate({
+        length: 5,
+        charset: 'alphabetic'
+      });
+
+
     if(!session){
         return NextResponse.json({
             success:false,
@@ -20,23 +26,19 @@ export async function POST(req:NextRequest){
         })
 
         await db.$transaction(async tx=>{
-            const user_account =await db.userAccount.update({
+            const user_account =await db.userAccount.findFirst({
                 where:{
                     userid:user?.id
                 },
-                data:{
-                    balance:{
-                        increment:Number(amount)
-                    }
-                }
-                
             })
 
             await db.onRamps.create({
                 data:{
                     banckName:bankname,
                     onrampAmount:Number(amount),
-                    accountid:user_account.id
+                    accountid:user_account?.id as string,
+                    tokenForWebhook:webhook_token,
+                    status:"processing"
                 }
             })
         })
