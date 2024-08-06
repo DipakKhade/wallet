@@ -28,10 +28,17 @@ model OnRamps {
   onrampAmount Int
   banckName String
   timestamp DateTime @default(now())
+  status OnRampsStatus @default(success)
+  tokenForWebhook String
   account UserAccount @relation(fields: [accountid],references: [id])
   accountid String 
 }
 
+enum OnRampsStatus {
+  success
+  processing
+  fail
+}
 
 model Merchant {
   id              String           @id @default(uuid())
